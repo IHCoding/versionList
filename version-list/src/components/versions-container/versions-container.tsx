@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import Button from '../../custom-components/button';
+import VersionsContainerInput from './versions-container-input';
 import VersionsContainerSection from './versions-container-section';
 
 const VersionsContainerRoot = styled.div`
@@ -23,21 +23,51 @@ const VersionsContainerSectionButtonsContainer = styled.div`
   right: 5%;
 `;
 
-interface Props {
-  onAdd?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
+const VersionsContainerAddButton = styled.button`
+  color: blue;
+  background: transparent;
+  border-radius: 5px;
+  border-color: #d3d3d3;
+  margin: 8px;
+  padding: 8px;
+`;
 
-export const VersionsContainer: React.FC<Props> = ({ onAdd }: Props) => {
+const VersionsContainerCancelButton = styled.button`
+  background: transparent;
+  border-radius: 8px;
+  border-color: #d3d3d3;
+  margin: 8px;
+  padding: 8px;
+`;
+
+export const VersionsContainer: React.FC = () => {
+  const [activeButton, setActiveButton] = useState(false);
+
+  const handleButtonClick = (value: string) => {
+    setActiveButton(value === 'true' ? true : false);
+    console.log('handlebutton cliked');
+  };
+
   return (
     <VersionsContainerRoot>
       <VersionsContainerSection title={'Versions'}>
         <VersionsContainerSectionButtonsContainer>
-          <Button color={'primary'}>ADD</Button>
-          <Button color={'default'}>Cancel</Button>
+          <VersionsContainerAddButton onClick={() => handleButtonClick('true')}>
+            ADD
+          </VersionsContainerAddButton>
+          {activeButton ? (
+            <VersionsContainerCancelButton
+              onClick={() => handleButtonClick('false')}
+            >
+              CANCEL
+            </VersionsContainerCancelButton>
+          ) : (
+            ''
+          )}
         </VersionsContainerSectionButtonsContainer>
       </VersionsContainerSection>
+      {activeButton ? <VersionsContainerInput /> : ''}
     </VersionsContainerRoot>
   );
 };
-
 export default VersionsContainer;
