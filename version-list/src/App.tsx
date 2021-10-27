@@ -1,10 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import VersionsContainer from './components/versions-container';
 
 function App() {
-  const [versionsItem, setVersionsItem] = useState();
-
-  // const handleAddVersionsItem = useCallback( () => {return setVersionsItem();}, [setVersionsItem])
   return (
     <div>
       Welcom to Test App
