@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import ArrowDropDownIcon from '../../../custom-components/icons/arrow-drop-down-icon';
 import ArrowDropUpIcon from '../../../custom-components/icons/arrow-drop-up-icon';
 import VersionsContainerInputField from '../versions-container-input-field';
-import stylesCss from './versions-container-styles.module.css';
 
 const VersionsContainerInputRoot = styled.div`
   border-radius: 5px;
@@ -111,7 +110,7 @@ interface IVersionForm {
 
 const Operators = ['equal=', 'greather than', 'less than', 'between'];
 
-const VersionsContainerOperators: React.FC = (props) => {
+const VersionsContainerOperators: React.FC<any> = (props) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
 
   const [form, setForm] = useState<IVersionForm>({
@@ -123,7 +122,7 @@ const VersionsContainerOperators: React.FC = (props) => {
   console.log('logging value', props);
 
   const handleDropdown = () => {
-    console.log('triggered butto');
+    console.log('triggered button');
     setDropdown(!dropdown);
   };
 
@@ -170,7 +169,10 @@ const VersionsContainerOperators: React.FC = (props) => {
       )}
       <VersionsContainerInputField
         value={form.maxVersion}
-        setValue={(val: string) => setForm({ ...form, maxVersion: val })}
+        setValue={(val: string) => {
+          props.onSelectVersion({ ...form, maxVersion: val });
+          setForm({ ...form, maxVersion: val });
+        }}
       />
     </VersionsContainerInputRoot>
   );

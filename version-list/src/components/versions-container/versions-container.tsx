@@ -14,61 +14,37 @@ const VersionsContainerRoot = styled.div`
   min-height: 300px;
 `;
 
-const VersionsContainerSectionButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  padding: 4px;
-  top: 8%;
-  right: 5%;
-`;
-
-const VersionsContainerAddButton = styled.button`
-  color: blue;
-  background: transparent;
-  border-radius: 5px;
-  border-color: #d3d3d3;
-  margin: 8px;
-  padding: 8px;
-  position: relative;
-`;
-
-const VersionsContainerCancelButton = styled.button`
-  background: transparent;
-  border-radius: 8px;
-  border-color: #d3d3d3;
-  margin: 8px;
-  padding: 8px;
-  position: relative;
-`;
-
 export const VersionsContainer: React.FC = () => {
   const [activeButton, setActiveButton] = useState(false);
-
-  const handleButtonClick = (value: string) => {
-    setActiveButton(value === 'true' ? true : false);
-    console.log('handlebutton cliked');
-  };
+  const [versions, setVersions] = useState<string[]>([]);
+  const [currentFormVersion, setCurrentFormVersion] = useState<string>();
 
   return (
     <VersionsContainerRoot>
-      <VersionsContainerSection title={'Versions'}>
-        <VersionsContainerSectionButtonsContainer>
-          <VersionsContainerAddButton onClick={() => handleButtonClick('true')}>
-            ADD
-          </VersionsContainerAddButton>
-          {activeButton ? (
-            <VersionsContainerCancelButton
-              onClick={() => handleButtonClick('false')}
-            >
-              CANCEL
-            </VersionsContainerCancelButton>
-          ) : (
-            ''
-          )}
-        </VersionsContainerSectionButtonsContainer>
-      </VersionsContainerSection>
-      {activeButton ? <VersionsContainerInput /> : ''}
+      <VersionsContainerSection
+        title={'Versions'}
+        versions={versions}
+        toolBar={{ activeButton, setActiveButton }}
+        handleAddVersion={() => {
+          // @todo:
+          // check the versions array for existing
+          // value,
+          // else
+          // add
+          if (versions && currentFormVersion) {
+            setVersions([...versions, currentFormVersion]);
+          }
+        }}
+      ></VersionsContainerSection>
+      {activeButton ? (
+        <VersionsContainerInput
+          onSelectVersion={(versionValue: any) => {
+            setCurrentFormVersion(versionValue.maxVersion);
+          }}
+        />
+      ) : (
+        ''
+      )}
     </VersionsContainerRoot>
   );
 };

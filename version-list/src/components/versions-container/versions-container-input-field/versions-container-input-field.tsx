@@ -32,7 +32,7 @@ const InputField = styled.input`
 
 const VersionsContainerInputField: React.FC<any> = (props: any) => {
   return (
-    <InputFieldRoot>
+    <InputFieldRoot placeholder="Version">
       <InputField
         onChange={(e: any) => props.setValue(e.target.value)}
         type="text"
