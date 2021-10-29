@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import VersionsContainerInput from './versions-container-input';
+import VersionsContainerInput from './versions-container-operators';
 import VersionsContainerSection from './versions-container-section';
 
 const VersionsContainerRoot = styled.div`
@@ -30,6 +30,7 @@ const VersionsContainerAddButton = styled.button`
   border-color: #d3d3d3;
   margin: 8px;
   padding: 8px;
+  position: relative;
 `;
 
 const VersionsContainerCancelButton = styled.button`
@@ -38,6 +39,7 @@ const VersionsContainerCancelButton = styled.button`
   border-color: #d3d3d3;
   margin: 8px;
   padding: 8px;
+  position: relative;
 `;
 
 export const VersionsContainer: React.FC = () => {
