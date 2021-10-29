@@ -1,6 +1,8 @@
 import React from 'react';
 import VersionsContainer from './components/versions-container';
 
+import './index.css';
+
 function App() {
   return (
     <div>

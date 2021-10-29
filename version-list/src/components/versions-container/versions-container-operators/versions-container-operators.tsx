@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import ArrowDropDownIcon from '../../../custom-components/icons/arrow-drop-down-icon';
+import ArrowDropUpIcon from '../../../custom-components/icons/arrow-drop-up-icon';
 import VersionsContainerInputField from '../versions-container-input-field';
 import stylesCss from './versions-container-styles.module.css';
 
@@ -10,8 +12,8 @@ const VersionsContainerInputRoot = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 40%;
-  height: 40px;
+  width: 100%;
+  height: 85px;
   margin-top: 1rem;
   padding: 1rem;
   box-sizing: border-box;
@@ -27,6 +29,7 @@ const OperatorLabelAndIconsContainer = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   cursor: pointer;
+  position: relative;
 `;
 
 const OperatorLabelsContainer = styled.div`
@@ -50,18 +53,27 @@ const OperatorChosen = styled.div`
 `;
 
 const IconContainer = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
+  display: inline;
+  position: absolute;
+  top: 0;
+  right: 0;
   align-items: center;
   margin: 8px;
   margin-right: 12px;
 `;
 
 const DropdownOperatorsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem 0;
   box-sizing: border-box;
+  justify-content: center;
+  box-shadow: 0px 4px 17px rgb(0 0 0 / 35%);
   position: absolute;
-  display: none;
+  top: 87px;
+  border-radius: 5px;
+  background-color: white;
 `;
 
 const DropdownItemSpan = styled.span`
@@ -73,10 +85,9 @@ const DropdownItemSpan = styled.span`
     background: rgba(0, 0, 0, 0.3);
     color: #fff;
   }
-
   height: 30px;
   color: black;
-  font-size: 14px;
+  font-size: 1em;
 `;
 
 const activeDropdown = {
@@ -84,67 +95,83 @@ const activeDropdown = {
   color: '#fff',
 };
 
+const DropdownTriggerContainer = styled.div`
+  border: 1px solid rgb(166 166 166);
+  background: rgb(246 246 246);
+  width: 100%;
+  border-radius: 5px;
+  height: 100%;
+`;
+
+interface IVersionForm {
+  operator: string | null;
+  minVersion: string | null;
+  maxVersion: string | null;
+}
+
 const Operators = ['equal=', 'greather than', 'less than', 'between'];
 
 const VersionsContainerOperators: React.FC = (props) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
-  const [operator, setOperator] = useState<string>('equal=');
-  const [clickOperator, setClickOperator] = useState<string>();
+
+  const [form, setForm] = useState<IVersionForm>({
+    operator: 'equal=',
+    minVersion: null,
+    maxVersion: null,
+  });
 
   console.log('logging value', props);
 
   const handleDropdown = () => {
     console.log('triggered butto');
-    setDropdown((prevState) => !prevState);
+    setDropdown(!dropdown);
   };
 
   const handleOperatorclick = (value: string) => {
-    setOperator(value);
-    setDropdown(false);
+    setForm({
+      ...form,
+      operator: value,
+    });
+    console.log(dropdown);
+    setDropdown(!dropdown);
   };
 
   return (
     <VersionsContainerInputRoot>
-      <OperatorLabelAndIconsContainer onClick={handleDropdown}>
-        <div
-          style={{
-            position: 'relative',
-            border: 'solid 1px #ddd',
-            background: '#ccc',
-            width: '100%',
-          }}
-        >
+      <OperatorLabelAndIconsContainer onClick={() => handleDropdown()}>
+        <DropdownTriggerContainer>
           <OperatorLabelsContainer>
             <OperatorLabel>Operator </OperatorLabel>
-            <OperatorChosen>{operator}</OperatorChosen>
+            <OperatorChosen>{form.operator}</OperatorChosen>
           </OperatorLabelsContainer>
-          <IconContainer>Icon</IconContainer>
-        </div>
+          <IconContainer>
+            {dropdown ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+          </IconContainer>
+        </DropdownTriggerContainer>
         {dropdown && (
-          <div className={`${stylesCss.DropdownOptionsOnClick}`}>
-            {Operators.map((item) =>
-              item === operator ? (
-                <DropdownItemSpan
-                  key={item}
-                  onClick={() => handleOperatorclick(item)}
-                  style={activeDropdown}
-                >
-                  {item}
-                </DropdownItemSpan>
-              ) : (
-                <DropdownItemSpan
-                  key={item}
-                  onClick={() => handleOperatorclick(item)}
-                >
-                  {item}
-                </DropdownItemSpan>
-              )
-            )}
-          </div>
+          <DropdownOperatorsContainer>
+            {Operators.map((item) => (
+              <DropdownItemSpan
+                key={item}
+                onClick={() => handleOperatorclick(item)}
+                style={item === form.operator ? activeDropdown : {}}
+              >
+                {item}
+              </DropdownItemSpan>
+            ))}
+          </DropdownOperatorsContainer>
         )}
       </OperatorLabelAndIconsContainer>
-
-      <VersionsContainerInputField />
+      {form.operator && form.operator === 'between' && (
+        <VersionsContainerInputField
+          value={form.minVersion}
+          setValue={(val: string) => setForm({ ...form, minVersion: val })}
+        />
+      )}
+      <VersionsContainerInputField
+        value={form.maxVersion}
+        setValue={(val: string) => setForm({ ...form, maxVersion: val })}
+      />
     </VersionsContainerInputRoot>
   );
 };

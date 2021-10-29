@@ -2,39 +2,43 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const InputFieldRoot = styled.div`
-  border-radius: 5px;
   min-height: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 40%;
-  height: 50px;
-  margin-top: 1rem;
+  height: 85px;
   padding: 1rem;
   box-sizing: border-box;
   position: relative;
+  border: 1px solid rgb(166 166 166);
+  background: rgb(246 246 246);
+  width: 100%;
+  border-radius: 5px;
+  margin-left: 10px;
 `;
 
-const VersionsContainerInputField: React.FC = () => {
-  const [inputVal, setVal] = useState('');
+const InputField = styled.input`
+  border: none;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  font-size: 16px;
+  &:focus {
+    border: none;
+    outline: none;
+  }
+`;
 
-  //   useEffect(() => {
-  //     if (localStorage.getItem('versionArray')?.length) {
-  //       let newArr = localStorage.getItem('versionArray')?.length
-  //         ? localStorage.getItem('versionArray')
-  //         : [];
-  //       newArr.push(inputVal);
-  //     } else {
-  //       if (inputVal) {
-  //         localStorage.setItem('versionArray', inputVal);
-  //       }
-  //     }
-  //   }, [inputVal]);
-
+const VersionsContainerInputField: React.FC<any> = (props: any) => {
   return (
     <InputFieldRoot>
-      <input onChange={(e) => setVal(e.target.value)} type="number"></input>
+      <InputField
+        onChange={(e: any) => props.setValue(e.target.value)}
+        type="text"
+        placeholder="Version"
+        value={props.value}
+      ></InputField>
     </InputFieldRoot>
   );
 };
