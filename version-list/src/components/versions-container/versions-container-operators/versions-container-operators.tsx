@@ -5,13 +5,12 @@ import ArrowDropUpIcon from '../../../custom-components/icons/arrow-drop-up-icon
 import VersionsContainerInputField from '../versions-container-input-field';
 
 const VersionsContainerInputRoot = styled.div`
-  border-radius: 5px;
-  min-height: 10px;
+  border-radius: 4px;
+  min-height: 24px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
   height: 85px;
   margin-top: 3rem;
   padding: 1rem;
@@ -32,7 +31,6 @@ const OperatorLabelAndIconsContainer = styled.div`
 `;
 
 const OperatorLabelsContainer = styled.div`
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,11 +50,9 @@ const OperatorChosen = styled.div`
 `;
 
 const IconContainer = styled.div`
-  display: inline;
   position: absolute;
-  top: 0;
   right: 0;
-  align-items: center;
+  bottom: 18px;
   margin: 8px;
   margin-right: 12px;
 `;
@@ -65,32 +61,31 @@ const DropdownOperatorsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 1rem 0;
-  box-sizing: border-box;
-  justify-content: center;
-  box-shadow: 0px 4px 17px rgb(0 0 0 / 35%);
+  padding: 8px 0;
+  box-shadow: 0px 4px 8px rgb(0 0 0 / 35%);
   position: absolute;
-  top: 87px;
-  border-radius: 5px;
+  top: 89px;
+  border-radius: 4px;
   background-color: white;
 `;
 
 const DropdownItemSpan = styled.span`
-  margin-bottom: 8px;
+  margin-bottom: 2px;
   cursor: pointer;
-  padding: 10px;
+  padding: 4px 16px;
+  height: 30px;
+  color: black;
+  font-size: 1em;
+  border-radius: 4px;
 
   &:hover {
     background: rgba(0, 0, 0, 0.3);
     color: #fff;
   }
-  height: 30px;
-  color: black;
-  font-size: 1em;
 `;
 
 const activeDropdown = {
-  backgroundColor: '#000',
+  backgroundColor: '#4E4A4A',
   color: '#fff',
 };
 
@@ -100,6 +95,7 @@ const DropdownTriggerContainer = styled.div`
   width: 100%;
   border-radius: 5px;
   height: 100%;
+  min-width: 120px;
 `;
 
 interface IVersionForm {

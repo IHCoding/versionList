@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const InputFieldRoot = styled.div`
   min-height: 10px;
+  min-width: 120px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

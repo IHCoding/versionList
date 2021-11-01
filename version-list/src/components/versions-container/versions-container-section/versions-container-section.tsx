@@ -33,7 +33,6 @@ const VersionsContainerSectionContent = styled.div`
     border-radius: 7px;
     border: 3px solid transparent;
     background-clip: padding-box;
-    height: 10px;
   }
 `;
 

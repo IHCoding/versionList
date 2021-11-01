@@ -10,8 +10,8 @@ const VersionsContainerRoot = styled.div`
   border-radius: 8px;
   margin: 1% 2%;
   padding: 0 16px;
-  min-width: 300px;
-  min-height: 350px;
+  min-width: 350px;
+  min-height: 450px;
 `;
 
 export const VersionsContainer: React.FC = () => {
