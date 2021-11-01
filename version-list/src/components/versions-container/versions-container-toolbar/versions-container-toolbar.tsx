@@ -2,12 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const VersionsContainerSectionButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  padding: 4px;
-  top: 8%;
-  right: 5%;
+  margin: 8px 0;
 `;
 
 const VersionsContainerAddButton = styled.button`
@@ -30,36 +25,25 @@ const VersionsContainerCancelButton = styled.button`
 `;
 
 const VersionsContainerToolbar: React.FC<any> = (props: any) => {
-  const handleButtonClick = (value: string) => {
-    props.setActiveButton(value === 'true' ? true : false);
-    console.log('handlebutton cliked');
-  };
-
   return (
-    <div>
-      <VersionsContainerSectionButtonsContainer>
-        {props.activeButton ? (
-          <>
-            <VersionsContainerAddButton
-              onClick={() => props.handleAddVersion()}
-            >
-              ADD
-            </VersionsContainerAddButton>
-            <VersionsContainerCancelButton
-              onClick={() => props.setActiveButton(false)}
-            >
-              CANCEL
-            </VersionsContainerCancelButton>
-          </>
-        ) : (
-          <VersionsContainerAddButton
-            onClick={() => props.setActiveButton(true)}
-          >
-            ADD VERSION
+    <VersionsContainerSectionButtonsContainer>
+      {props.activeButton ? (
+        <>
+          <VersionsContainerAddButton onClick={() => props.handleAddVersion()}>
+            ADD
           </VersionsContainerAddButton>
-        )}
-      </VersionsContainerSectionButtonsContainer>
-    </div>
+          <VersionsContainerCancelButton
+            onClick={() => props.setActiveButton(false)}
+          >
+            CANCEL
+          </VersionsContainerCancelButton>
+        </>
+      ) : (
+        <VersionsContainerAddButton onClick={() => props.setActiveButton(true)}>
+          ADD VERSION
+        </VersionsContainerAddButton>
+      )}
+    </VersionsContainerSectionButtonsContainer>
   );
 };
 

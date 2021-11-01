@@ -3,10 +3,16 @@ import VersionsContainer from './components/versions-container';
 
 import './index.css';
 
+const customStyle = {
+  margin: '2%',
+};
+
+const AppTitle = 'Versions Overview';
+
 function App() {
   return (
     <div>
-      <h2> Welcom to Test App</h2>
+      <h2 style={customStyle}> {AppTitle.toUpperCase()}</h2>
       <VersionsContainer />
     </div>
   );

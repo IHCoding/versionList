@@ -8,16 +8,38 @@ const VersionsContainerRoot = styled.div`
   flex-direction: column;
   background-color: #eff2f7;
   border-radius: 8px;
-  margin: 8px;
+  margin: 1% 2%;
   padding: 0 16px;
   min-width: 300px;
-  min-height: 300px;
+  min-height: 350px;
 `;
 
 export const VersionsContainer: React.FC = () => {
   const [activeButton, setActiveButton] = useState(false);
   const [versions, setVersions] = useState<string[]>([]);
   const [currentFormVersion, setCurrentFormVersion] = useState<string>();
+
+  const onAddVersion = () => {
+    // @todo:
+    // check the versions array for existing
+    // value,
+    // else
+    // add
+    if (versions && currentFormVersion) {
+      if (versions.includes(currentFormVersion)) {
+        if (
+          !window.confirm(
+            'This version already exists. Do you still want to add it?!'
+          )
+        ) {
+          return;
+        }
+        setVersions([...versions, currentFormVersion]);
+      } else {
+        setVersions([...versions, currentFormVersion]);
+      }
+    }
+  };
 
   return (
     <VersionsContainerRoot>
@@ -26,14 +48,7 @@ export const VersionsContainer: React.FC = () => {
         versions={versions}
         toolBar={{ activeButton, setActiveButton }}
         handleAddVersion={() => {
-          // @todo:
-          // check the versions array for existing
-          // value,
-          // else
-          // add
-          if (versions && currentFormVersion) {
-            setVersions([...versions, currentFormVersion]);
-          }
+          onAddVersion();
         }}
       ></VersionsContainerSection>
       {activeButton ? (

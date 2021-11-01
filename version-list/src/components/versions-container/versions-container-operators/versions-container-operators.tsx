@@ -13,7 +13,7 @@ const VersionsContainerInputRoot = styled.div`
   align-items: center;
   width: 100%;
   height: 85px;
-  margin-top: 1rem;
+  margin-top: 3rem;
   padding: 1rem;
   box-sizing: border-box;
   position: relative;
@@ -115,8 +115,8 @@ const VersionsContainerOperators: React.FC<any> = (props) => {
 
   const [form, setForm] = useState<IVersionForm>({
     operator: 'equal=',
-    minVersion: null,
-    maxVersion: null,
+    minVersion: '',
+    maxVersion: '',
   });
 
   console.log('logging value', props);

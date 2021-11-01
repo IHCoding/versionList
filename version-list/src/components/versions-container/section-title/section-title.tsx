@@ -3,15 +3,14 @@ import styled from 'styled-components';
 
 const VersionContainerSectionTitleRoot = styled.h3`
   font-variant: Quicksand;
-  font-weight: 550;
   margin: 16px;
   font-size: 24px;
-  display: inline-flex;
-  justify-content: left;
+  width: auto%;
 `;
 
 interface Props {
   title: string;
+  style?: any;
 }
 
 export const SectionTitle: React.FC<Props> = ({ title }: Props) => {
