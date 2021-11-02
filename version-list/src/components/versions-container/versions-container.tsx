@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { compareVersions } from '../../utils/cmd/compare-versions';
-import rcompare from 'semver/functions/rcompare';
+import { compareVersions } from '../../utils/cmd/compared-versions/compare-versions';
 import compare from 'semver/functions/compare';
 
 import { IVersionData } from '../../utils/data-types/versions-types';
 import VersionsContainerInput from './versions-container-operators';
 import VersionsContainerSection from './versions-container-section';
-import { version } from 'process';
-import { EQ } from '../../utils/operators-list-values';
+import { EQ } from '../../utils/global-values/operators-list-values/operators-list-values';
 
 const VersionsContainerRoot = styled.div`
   display: flex;

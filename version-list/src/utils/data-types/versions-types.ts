@@ -1,4 +1,4 @@
-import { OperatorsListValues } from "../operators-list-values";
+import { OperatorsListValues } from "../global-values/operators-list-values/operators-list-values";
 
 export interface IVersionData {
     operator: keyof typeof OperatorsListValues;

@@ -10,8 +10,8 @@ import semverLtr from 'semver/ranges/ltr';
 
 import semverIntersects from 'semver/ranges/intersects';
 
-import { BTWN, EQ, GT, GTE, LT, LTE, OperatorsListValues } from '../operators-list-values';
-import { IVersionData } from '../data-types/versions-types';
+import { BTWN, EQ, GT, GTE, LT, LTE, OperatorsListValues } from '../../global-values/operators-list-values/operators-list-values';
+import { IVersionData } from '../../data-types/versions-types';
 
 // @todo
 // check for TypeError: Invalid Version: 0,0,2

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { IVersionData } from '../../../utils/data-types/versions-types';
-import { BTWN } from '../../../utils/operators-list-values';
+import { BTWN } from '../../../utils/global-values/operators-list-values/operators-list-values';
 import SectionTitle from '../section-title';
 import VersionsItems from '../versions-container-items';
 import VersionsContainerToolbar from '../versions-container-toolbar';
