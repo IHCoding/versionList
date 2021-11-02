@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { IVersionData } from '../../../utils/data-types/versions-types';
+import { BTWN } from '../../../utils/operators-list-values';
 import SectionTitle from '../section-title';
 import VersionsItems from '../versions-container-items';
 import VersionsContainerToolbar from '../versions-container-toolbar';
@@ -8,19 +10,25 @@ interface Props {
   title: string;
   children?: React.ReactNode | React.ReactNode[];
   toolBar: any;
-  versions: any[];
+  versions: IVersionData[];
   handleAddVersion: () => void;
 }
 
 const VersionsContanerSectionRoot = styled.div`
   display: flex;
   flex-direction: column;
+  :last-child {
+    margin-right: 0;
+  }
 `;
 
 const VersionsContainerSectionContent = styled.div`
   cursor: pointer;
   overflow-x: auto;
   margin-left: 15px;
+  width: 100%;
+  max-height: 150px;
+  // display: flex;
 
   ::-webkit-scrollbar {
     border: solid 1px #d3d3d3;
@@ -48,7 +56,9 @@ const ToolbarHeader = styled.div`
   justify-content: space-between;
 `;
 
-const versionCollection: any = {};
+const versionCollection: {
+  [version: string]: number;
+} = {};
 
 export const VersionsContainerSection: React.FC<Props> = ({
   title,
@@ -57,17 +67,23 @@ export const VersionsContainerSection: React.FC<Props> = ({
   handleAddVersion,
 }: Props) => {
   useEffect(() => {
-    versions.forEach((version: any) => {
-      if (versionCollection[version]) {
-        versionCollection[version] = versionCollection[version] + 1;
+    // @todo:
+    // clean up / refactor the code below.
+    // solve issues with global versionCollection
+    // and performance .
+    versions.forEach((version) => {
+      if (versionCollection[version.maxVersion]) {
+        versionCollection[version.maxVersion] =
+          versionCollection[version.maxVersion] + 1;
       } else {
-        versionCollection[version] = 1;
+        versionCollection[version.maxVersion] = 1;
       }
     });
     console.log(versionCollection);
   }, [versions]);
 
-  const isDuplicateElement = (version: string) => {
+  const isDuplicateElement = (version: string | null) => {
+    if (!version) return false;
     return versionCollection[version] > 1;
   };
 
@@ -84,14 +100,21 @@ export const VersionsContainerSection: React.FC<Props> = ({
       </ToolbarHeader>
       <VersionsContainerSectionContent>
         <VersionsItemsContainer
-          style={{ width: versions.length * 108 + 143 + 'px' }}
+          //@todo
+          // adjust the math calculation
+          style={{ width: versions.length * 108 + 149 + 'px' }}
         >
           {versions &&
-            versions.map((version, key) => (
+            versions.map(({ maxVersion, minVersion, operator }, key) => (
               <VersionsItems
                 key={key}
-                isDuplicate={isDuplicateElement(version)}
-                text={version}
+                isDuplicate={isDuplicateElement(maxVersion)}
+                text={
+                  // @ts-ignore
+                  operator === BTWN
+                    ? `${minVersion} - ${maxVersion}`
+                    : maxVersion
+                }
               />
             ))}
         </VersionsItemsContainer>

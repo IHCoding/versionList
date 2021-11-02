@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { compareVersions } from '../../utils/cmd/compare-versions';
+import rcompare from 'semver/functions/rcompare';
+import compare from 'semver/functions/compare';
+
+import { IVersionData } from '../../utils/data-types/versions-types';
 import VersionsContainerInput from './versions-container-operators';
 import VersionsContainerSection from './versions-container-section';
+import { version } from 'process';
+import { EQ } from '../../utils/operators-list-values';
 
 const VersionsContainerRoot = styled.div`
   display: flex;
@@ -16,17 +23,22 @@ const VersionsContainerRoot = styled.div`
 
 export const VersionsContainer: React.FC = () => {
   const [activeButton, setActiveButton] = useState(false);
-  const [versions, setVersions] = useState<string[]>([]);
-  const [currentFormVersion, setCurrentFormVersion] = useState<string>();
+  const [versions, setVersions] = useState<IVersionData[]>([]);
+  const [currentFormVersion, setCurrentFormVersion] = useState<IVersionData>({
+    // @ts-ignore
+    operator: EQ,
+    minVersion: '',
+    maxVersion: '',
+  });
 
   const onAddVersion = () => {
-    // @todo:
     // check the versions array for existing
     // value,
     // else
     // add
-    if (versions && currentFormVersion) {
-      if (versions.includes(currentFormVersion)) {
+    if (currentFormVersion) {
+      const compared = compareVersions(versions, currentFormVersion)();
+      if (compared) {
         if (
           !window.confirm(
             'This version already exists. Do you still want to add it?!'
@@ -34,9 +46,19 @@ export const VersionsContainer: React.FC = () => {
         ) {
           return;
         }
-        setVersions([...versions, currentFormVersion]);
+        const sortedVersions = [...versions, currentFormVersion].sort(
+          (aVersion, bVersion) =>
+            compare(aVersion.maxVersion, bVersion.maxVersion)
+        );
+
+        setVersions(sortedVersions);
       } else {
-        setVersions([...versions, currentFormVersion]);
+        const sortedVersions = [...versions, currentFormVersion].sort(
+          (aVersion, bVersion) =>
+            compare(aVersion.maxVersion, bVersion.maxVersion)
+        );
+
+        setVersions(sortedVersions);
       }
     }
   };
@@ -49,12 +71,19 @@ export const VersionsContainer: React.FC = () => {
         toolBar={{ activeButton, setActiveButton }}
         handleAddVersion={() => {
           onAddVersion();
+          setCurrentFormVersion({
+            // @ts-ignore
+            operator: EQ,
+            minVersion: '',
+            maxVersion: '',
+          });
         }}
-      ></VersionsContainerSection>
+      />
       {activeButton ? (
         <VersionsContainerInput
+          currentForm={currentFormVersion}
           onSelectVersion={(versionValue: any) => {
-            setCurrentFormVersion(versionValue.maxVersion);
+            setCurrentFormVersion(versionValue);
           }}
         />
       ) : (

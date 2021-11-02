@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ArrowDropDownIcon from '../../../custom-components/icons/arrow-drop-down-icon';
 import ArrowDropUpIcon from '../../../custom-components/icons/arrow-drop-up-icon';
+import { IVersionForm } from '../../../utils/data-types/versions-types';
+import { EQ, OperatorsListValues } from '../../../utils/operators-list-values';
 import VersionsContainerInputField from '../versions-container-input-field';
 
 const VersionsContainerInputRoot = styled.div`
@@ -98,22 +100,10 @@ const DropdownTriggerContainer = styled.div`
   min-width: 120px;
 `;
 
-interface IVersionForm {
-  operator: string | null;
-  minVersion: string | null;
-  maxVersion: string | null;
-}
-
-const Operators = ['equal=', 'greather than', 'less than', 'between'];
+const Operators = Object.values(OperatorsListValues);
 
 const VersionsContainerOperators: React.FC<any> = (props) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
-
-  const [form, setForm] = useState<IVersionForm>({
-    operator: 'equal=',
-    minVersion: '',
-    maxVersion: '',
-  });
 
   console.log('logging value', props);
 
@@ -123,11 +113,7 @@ const VersionsContainerOperators: React.FC<any> = (props) => {
   };
 
   const handleOperatorclick = (value: string) => {
-    setForm({
-      ...form,
-      operator: value,
-    });
-    console.log(dropdown);
+    props.onSelectVersion({ ...props.currentForm, operator: value });
     setDropdown(!dropdown);
   };
 
@@ -137,7 +123,7 @@ const VersionsContainerOperators: React.FC<any> = (props) => {
         <DropdownTriggerContainer>
           <OperatorLabelsContainer>
             <OperatorLabel>Operator </OperatorLabel>
-            <OperatorChosen>{form.operator}</OperatorChosen>
+            <OperatorChosen>{props.currentForm.operator}</OperatorChosen>
           </OperatorLabelsContainer>
           <IconContainer>
             {dropdown ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
@@ -149,7 +135,9 @@ const VersionsContainerOperators: React.FC<any> = (props) => {
               <DropdownItemSpan
                 key={item}
                 onClick={() => handleOperatorclick(item)}
-                style={item === form.operator ? activeDropdown : {}}
+                style={
+                  item === props.currentForm.operator ? activeDropdown : {}
+                }
               >
                 {item}
               </DropdownItemSpan>
@@ -157,17 +145,18 @@ const VersionsContainerOperators: React.FC<any> = (props) => {
           </DropdownOperatorsContainer>
         )}
       </OperatorLabelAndIconsContainer>
-      {form.operator && form.operator === 'between' && (
+      {props.currentForm.operator && props.currentForm.operator === 'Between' && (
         <VersionsContainerInputField
-          value={form.minVersion}
-          setValue={(val: string) => setForm({ ...form, minVersion: val })}
+          value={props.currentForm.minVersion}
+          setValue={(val: string) => {
+            props.onSelectVersion({ ...props.currentForm, minVersion: val });
+          }}
         />
       )}
       <VersionsContainerInputField
-        value={form.maxVersion}
+        value={props.currentForm.maxVersion}
         setValue={(val: string) => {
-          props.onSelectVersion({ ...form, maxVersion: val });
-          setForm({ ...form, maxVersion: val });
+          props.onSelectVersion({ ...props.currentForm, maxVersion: val });
         }}
       />
     </VersionsContainerInputRoot>
