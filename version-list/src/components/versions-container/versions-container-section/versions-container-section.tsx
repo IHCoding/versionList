@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { IVersionData } from '../../../utils/data-types/versions-types';
 import {
@@ -28,7 +28,6 @@ const VersionsContanerSectionRoot = styled.div`
 `;
 
 const VersionsContainerSectionContent = styled.div`
-  cursor: pointer;
   overflow-x: auto;
   width: 100%;
   max-height: 150px;
@@ -40,6 +39,7 @@ const VersionsItemsContainer = styled.div`
   margin: 12px 0;
   margin-bottom: 16px;
   width: auto;
+  padding-bottom: 18px;
 
   ::-webkit-scrollbar {
     border: solid 1px #d3d3d3;

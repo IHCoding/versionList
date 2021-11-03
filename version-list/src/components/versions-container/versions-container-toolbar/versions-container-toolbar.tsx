@@ -14,7 +14,7 @@ const VersionsContainerAddButton = styled.button`
   margin: 8px;
   padding: 8px;
   margin-right: 1px;
-
+  cursor: pointer;
   position: relative;
 `;
 
@@ -25,6 +25,7 @@ const VersionsContainerCancelButton = styled.button`
   padding: 8px;
   margin-left: 4px;
   position: relative;
+  cursor: pointer;
 `;
 
 const VersionsContainerToolbar: React.FC<any> = (props: any) => {
