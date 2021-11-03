@@ -10,7 +10,7 @@ import semverLtr from 'semver/ranges/ltr';
 
 import semverIntersects from 'semver/ranges/intersects';
 
-import { BTWN, EQ, GT, GTE, LT, LTE, OperatorsListValues } from '../../global-values/operators-list-values/operators-list-values';
+import { BTWNEAEB, BTWNIAEB, BTWNIAIB, EQ, GT, GTE, LT, LTE, OperatorsListValues } from '../../global-values/operators-list-values/operators-list-values';
 import { IVersionData } from '../../data-types/versions-types';
 
 // @todo
@@ -21,7 +21,14 @@ export const compareVersions = (versions: IVersionData[], { operator, minVersion
     const operationCallbacks = {
         [EQ]: () => {
             return versions.some((version) => {
-                return semverEq(maxVersion, version.maxVersion);
+                try {
+                    return semverEq(maxVersion, version.maxVersion);
+
+                } catch (e) {
+                    console.log(e);
+                    return true;
+                }
+
             });
         },
         [LT]: () => {
@@ -36,14 +43,32 @@ export const compareVersions = (versions: IVersionData[], { operator, minVersion
         [GTE]: () => {
             return !semverGte(maxVersion, versions[versions.length - 1].maxVersion);
         },
-        [BTWN]: () => {
-            // supplied with 3 possiblities
-            // a [1.2.3 - 1.3.0]  between, including 1.2.3 and 1.3.0
-            // b ]2.3.4 - 2.4.0[  between, excluding 2.3.4 and 2.4.0
-            // c  [1.2.3 - 1.3.0[  between, including 1.2.3 and excluding 1.3.0
-            // if (a|b|c) intersects('minversion, maxversion', 'versions[0] version[last]')
+        [BTWNIAIB]: () => {
 
-            return semverIntersects(`>=${minVersion} <=${maxVersion}`, `>=${versions[0].maxVersion} <=${versions[versions.length - 1].maxVersion}`);
+            if (versions.length) {
+                return semverIntersects(`>=${minVersion} <=${maxVersion}`, `>=${versions[0].maxVersion} <=${versions[versions.length - 1].maxVersion}`);
+            } else {
+                return false;
+            }
+
+        },
+        [BTWNIAEB]: () => {
+
+            if (versions.length) {
+                return semverIntersects(`>=${minVersion} <${maxVersion}`, `>=${versions[0].maxVersion} <=${versions[versions.length - 1].maxVersion}`);
+            } else {
+                return false;
+            }
+
+        },
+        [BTWNEAEB]: () => {
+
+            if (versions.length) {
+                return semverIntersects(`>${minVersion} <${maxVersion}`, `>=${versions[0].maxVersion} <=${versions[versions.length - 1].maxVersion}`);
+            } else {
+                return false;
+            }
+
         },
     };
 

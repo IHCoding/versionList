@@ -3,9 +3,8 @@ import styled from 'styled-components';
 
 const VersionContainerSectionTitleRoot = styled.h3`
   font-variant: Quicksand;
-  margin: 16px;
+  margin: 10px 0;
   font-size: 24px;
-  width: auto%;
 `;
 
 interface Props {

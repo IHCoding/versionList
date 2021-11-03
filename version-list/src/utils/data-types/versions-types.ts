@@ -4,10 +4,16 @@ export interface IVersionData {
     operator: keyof typeof OperatorsListValues;
     minVersion: string;
     maxVersion: string;
+    isConflicted?: boolean;
 }
 
 export interface IVersionForm {
-    operator: string | null;
-    minVersion: string | null;
-    maxVersion: string | null;
+    operator: keyof typeof OperatorsListValues;
+    minVersion: string;
+    maxVersion: string;
+    errors: {
+        operatorError: string | null,
+        minVersionError: string | null,
+        maxVersionError: string | null;
+    };
 }

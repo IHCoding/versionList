@@ -1,5 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import {
+  BTWNEAEB,
+  BTWNIAEB,
+  BTWNIAIB,
+} from '../../../utils/global-values/operators-list-values/operators-list-values';
 
 const InputFieldRoot = styled.div`
   min-height: 10px;
@@ -31,15 +36,37 @@ const InputField = styled.input`
   }
 `;
 
+const BtwnSpan = styled.span`
+  position: relative;
+  top: 0;
+  left: -5px;
+  font-size: 2em;
+  color: grey;
+`;
+
 const VersionsContainerInputField: React.FC<any> = (props: any) => {
   return (
     <InputFieldRoot placeholder="Version">
+      {props.minOrMax === 'minVersion' &&
+        (props.operator === BTWNIAIB || props.operator === BTWNIAEB) && (
+          <BtwnSpan> [ </BtwnSpan>
+        )}
+      {props.minOrMax === 'minVersion' && props.operator === BTWNEAEB && (
+        <BtwnSpan> ] </BtwnSpan>
+      )}
       <InputField
         onChange={(e: any) => props.setValue(e.target.value)}
         type="text"
         placeholder="Version"
         value={props.value}
       ></InputField>
+      {props.minOrMax === 'maxVersion' && props.operator === BTWNIAIB && (
+        <BtwnSpan> ] </BtwnSpan>
+      )}
+      {props.minOrMax === 'maxVersion' &&
+        (props.operator === BTWNEAEB || props.operator === BTWNIAEB) && (
+          <BtwnSpan> [ </BtwnSpan>
+        )}
     </InputFieldRoot>
   );
 };

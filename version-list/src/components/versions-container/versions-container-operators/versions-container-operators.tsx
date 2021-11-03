@@ -2,8 +2,17 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ArrowDropDownIcon from '../../../custom-components/icons/arrow-drop-down-icon';
 import ArrowDropUpIcon from '../../../custom-components/icons/arrow-drop-up-icon';
-import { OperatorsListValues } from '../../../utils/global-values/operators-list-values/operators-list-values';
+import {
+  BTWNEAEB,
+  BTWNIAEB,
+  BTWNIAIB,
+  OperatorsListValues,
+} from '../../../utils/global-values/operators-list-values/operators-list-values';
 import VersionsContainerInputField from '../versions-container-input-field';
+
+const InputFieldWrapper = styled.div`
+  margin: 4px;
+`;
 
 const VersionsContainerInputRoot = styled.div`
   border-radius: 4px;
@@ -13,10 +22,11 @@ const VersionsContainerInputRoot = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 85px;
-  margin-top: 3rem;
-  padding: 1rem;
+  margin-top: 3.5%;
   box-sizing: border-box;
   position: relative;
+  margin-right: 6px;
+  margin-left: 6px;
 `;
 
 const OperatorLabelAndIconsContainer = styled.div`
@@ -99,12 +109,17 @@ const DropdownTriggerContainer = styled.div`
   min-width: 120px;
 `;
 
+const InputFieldValidation = styled.p`
+  color: red;
+  display: block;
+  margin: 8px;
+  margin-left: 12px;
+`;
+
 const Operators = Object.values(OperatorsListValues);
 
 const VersionsContainerOperators: React.FC<any> = (props) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
-
-  console.log('logging value', props);
 
   const handleDropdown = () => {
     console.log('triggered button');
@@ -117,48 +132,69 @@ const VersionsContainerOperators: React.FC<any> = (props) => {
   };
 
   return (
-    <VersionsContainerInputRoot>
-      <OperatorLabelAndIconsContainer onClick={() => handleDropdown()}>
-        <DropdownTriggerContainer>
-          <OperatorLabelsContainer>
-            <OperatorLabel>Operator </OperatorLabel>
-            <OperatorChosen>{props.currentForm.operator}</OperatorChosen>
-          </OperatorLabelsContainer>
-          <IconContainer>
-            {dropdown ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
-          </IconContainer>
-        </DropdownTriggerContainer>
-        {dropdown && (
-          <DropdownOperatorsContainer>
-            {Operators.map((item) => (
-              <DropdownItemSpan
-                key={item}
-                onClick={() => handleOperatorclick(item)}
-                style={
-                  item === props.currentForm.operator ? activeDropdown : {}
-                }
-              >
-                {item}
-              </DropdownItemSpan>
-            ))}
-          </DropdownOperatorsContainer>
-        )}
-      </OperatorLabelAndIconsContainer>
-      {props.currentForm.operator && props.currentForm.operator === 'Between' && (
+    <InputFieldWrapper>
+      <VersionsContainerInputRoot>
+        <OperatorLabelAndIconsContainer onClick={() => handleDropdown()}>
+          <DropdownTriggerContainer>
+            <OperatorLabelsContainer>
+              <OperatorLabel>Operator </OperatorLabel>
+              <OperatorChosen>{props.currentForm.operator}</OperatorChosen>
+            </OperatorLabelsContainer>
+            <IconContainer>
+              {dropdown ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+            </IconContainer>
+          </DropdownTriggerContainer>
+          {dropdown && (
+            <DropdownOperatorsContainer>
+              {Operators.map((item) => (
+                <DropdownItemSpan
+                  key={item}
+                  onClick={() => handleOperatorclick(item)}
+                  style={
+                    item === props.currentForm.operator ? activeDropdown : {}
+                  }
+                >
+                  {item}
+                </DropdownItemSpan>
+              ))}
+            </DropdownOperatorsContainer>
+          )}
+        </OperatorLabelAndIconsContainer>
+        {props.currentForm.operator &&
+          [BTWNIAIB, BTWNIAEB, BTWNEAEB].indexOf(props.currentForm.operator) >
+            -1 && (
+            <VersionsContainerInputField
+              minOrMax={'minVersion'}
+              operator={props.currentForm.operator}
+              value={props.currentForm.minVersion}
+              setValue={(val: string) => {
+                props.onSelectVersion({
+                  ...props.currentForm,
+                  minVersion: val,
+                });
+              }}
+            />
+          )}
         <VersionsContainerInputField
-          value={props.currentForm.minVersion}
+          minOrMax={'maxVersion'}
+          operator={props.currentForm.operator}
+          value={props.currentForm.maxVersion}
           setValue={(val: string) => {
-            props.onSelectVersion({ ...props.currentForm, minVersion: val });
+            props.onSelectVersion({ ...props.currentForm, maxVersion: val });
           }}
         />
+      </VersionsContainerInputRoot>
+      {props.currentForm?.errors?.minVersionError && (
+        <InputFieldValidation>
+          {props.currentForm?.errors.minVersionError}
+        </InputFieldValidation>
       )}
-      <VersionsContainerInputField
-        value={props.currentForm.maxVersion}
-        setValue={(val: string) => {
-          props.onSelectVersion({ ...props.currentForm, maxVersion: val });
-        }}
-      />
-    </VersionsContainerInputRoot>
+      {props.currentForm?.errors?.maxVersionError && (
+        <InputFieldValidation>
+          {props.currentForm?.errors.maxVersionError}
+        </InputFieldValidation>
+      )}
+    </InputFieldWrapper>
   );
 };
 
