@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ArrowDropDownIcon from '../../../custom-components/icons/arrow-drop-down-icon';
 import ArrowDropUpIcon from '../../../custom-components/icons/arrow-drop-up-icon';
-import { IVersionForm } from '../../../utils/data-types/versions-types';
-import { EQ, OperatorsListValues } from '../../../utils/operators-list-values';
+import { OperatorsListValues } from '../../../utils/global-values/operators-list-values/operators-list-values';
 import VersionsContainerInputField from '../versions-container-input-field';
 
 const VersionsContainerInputRoot = styled.div`

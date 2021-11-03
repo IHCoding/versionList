@@ -5,6 +5,7 @@ import './index.css';
 
 const customStyle = {
   margin: '2%',
+  color: 'white',
 };
 
 const AppTitle = 'Versions Overview';
