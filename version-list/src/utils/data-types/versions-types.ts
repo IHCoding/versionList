@@ -5,6 +5,12 @@ export interface IVersionData {
     minVersion: string;
     maxVersion: string;
     isConflicted?: boolean;
+    errors?: {
+        operatorError: string | null,
+        minVersionError: string | null,
+        maxVersionError: string | null;
+    };
+
 }
 
 export interface IVersionForm {

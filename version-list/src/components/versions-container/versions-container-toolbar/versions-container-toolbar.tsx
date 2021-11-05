@@ -28,12 +28,22 @@ const VersionsContainerCancelButton = styled.button`
   cursor: pointer;
 `;
 
+const formHasErrors = (formErrors: any) => {
+  const hasErrors = formErrors
+    ? Object.values(formErrors).every((error) => !error)
+    : false;
+  return hasErrors;
+};
+
 const VersionsContainerToolbar: React.FC<any> = (props: any) => {
   return (
     <VersionsContainerSectionButtonsContainer>
       {props.activeButton ? (
         <>
-          <VersionsContainerAddButton onClick={() => props.handleAddVersion()}>
+          <VersionsContainerAddButton
+            disabled={!formHasErrors(props.formErrors)}
+            onClick={() => props.handleAddVersion()}
+          >
             ADD
           </VersionsContainerAddButton>
           <VersionsContainerCancelButton

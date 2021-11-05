@@ -1,13 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import compareVersions from '../../../utils/cmd/compared-versions';
 import { IVersionData } from '../../../utils/data-types/versions-types';
-import {
-  BTWNEAEB,
-  BTWNIAEB,
-  BTWNIAIB,
-  GTE,
-  LTE,
-} from '../../../utils/global-values/operators-list-values/operators-list-values';
+
 import SectionTitle from '../section-title';
 import VersionsItems from '../versions-container-items';
 import VersionsContainerToolbar from '../versions-container-toolbar';
@@ -67,23 +62,6 @@ export const VersionsContainerSection: React.FC<Props> = ({
   handleAddVersion,
   handleRemoveVersion,
 }: Props) => {
-  const printVersionRange = ({ operator, minVersion, maxVersion }: any) => {
-    switch (operator) {
-      case LTE:
-        return `<=${maxVersion}`;
-      case GTE:
-        return `>=${maxVersion}`;
-      case BTWNIAIB:
-        return `[${minVersion} ${maxVersion}]`;
-      case BTWNIAEB:
-        return `[${minVersion} <${maxVersion}[`;
-      case BTWNEAEB:
-        return `]${minVersion}  <${maxVersion}[`;
-      default:
-        return maxVersion;
-    }
-  };
-
   return (
     <VersionsContanerSectionRoot>
       <ToolbarHeader>
@@ -93,6 +71,7 @@ export const VersionsContainerSection: React.FC<Props> = ({
           activeButton={toolBar.activeButton}
           setActiveButton={toolBar.setActiveButton}
           handleAddVersion={handleAddVersion}
+          formErrors={toolBar.formErrors}
         />
       </ToolbarHeader>
       <VersionsContainerSectionContent>
@@ -102,8 +81,13 @@ export const VersionsContainerSection: React.FC<Props> = ({
               ({ maxVersion, minVersion, operator, isConflicted }, key) => (
                 <VersionsItems
                   key={key}
-                  isDuplicate={isConflicted}
-                  text={printVersionRange({ minVersion, maxVersion, operator })}
+                  // isDuplicate={isConflicted}
+                  isDuplicate={compareVersions(versions, {
+                    maxVersion,
+                    minVersion,
+                    operator,
+                  })()}
+                  version={{ maxVersion, minVersion, operator }}
                   onClick={() => handleRemoveVersion(key)}
                 />
               )

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { compareVersions } from '../../utils/cmd/compared-versions/compare-versions';
+import {
+  compareVersions,
+  markVersionsAsConflicted,
+} from '../../utils/cmd/compared-versions/compare-versions';
 import compare from 'semver/functions/compare';
 
 import {
@@ -84,11 +87,9 @@ export const VersionsContainer: React.FC = () => {
         ) {
           return;
         }
-        const sortedVersions = [
-          ...versions,
-          { ...currentFormVersion, isConflicted: true },
-        ].sort((aVersion, bVersion) =>
-          compare(aVersion.maxVersion, bVersion.maxVersion)
+        const sortedVersions = [...versions, { ...currentFormVersion }].sort(
+          (aVersion, bVersion) =>
+            compare(aVersion.maxVersion, bVersion.maxVersion)
         );
 
         setVersions(sortedVersions);
@@ -108,11 +109,20 @@ export const VersionsContainer: React.FC = () => {
       <VersionsContainerSection
         title={'Versions'}
         versions={versions}
-        toolBar={{ activeButton, setActiveButton }}
+        toolBar={{
+          activeButton,
+          setActiveButton,
+          formErrors: currentFormVersion.errors,
+        }}
         handleRemoveVersion={(index) => {
-          const copyVersions = [...versions];
-          copyVersions.splice(index, 1);
-          setVersions(copyVersions);
+          if (!window.confirm('Do you want to remove this item?!')) {
+            return false;
+          } else {
+            const copyVersions = [...versions];
+            copyVersions.splice(index, 1);
+
+            setVersions(copyVersions);
+          }
         }}
         handleAddVersion={() => {
           onAddVersion();

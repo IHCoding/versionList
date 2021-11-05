@@ -127,7 +127,7 @@ const VersionsContainerOperators: React.FC<any> = (props) => {
   };
 
   const handleOperatorclick = (value: string) => {
-    props.onSelectVersion({ ...props.currentForm, operator: value });
+    props.onSelectVersion({ minVersion: '', maxVersion: '', operator: value });
     setDropdown(!dropdown);
   };
 
